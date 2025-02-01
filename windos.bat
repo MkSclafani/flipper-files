@@ -8,9 +8,14 @@ if %errorlevel% neq 0 (
     exit
 )
 
-:: Nascondere il terminale e avviare il bot in loop
+:: Controlla se il bot è già in esecuzione
+tasklist | findstr /I /C:"python.exe" | findstr /I /C:"windos.py" >nul
+if %errorlevel% equ 0 (
+    echo [⚠] Il bot è già in esecuzione! >> C:\ProgramData\windos\windos.log
+    exit
+)
+
+:: Avvia il bot senza mostrare la finestra
 echo [✔] Avvio del bot... >> C:\ProgramData\windos\windos.log
-:loop
-start /min cmd /c python windos.py >> C:\ProgramData\windos\windos.log 2>&1
-timeout /t 10 >nul
-goto loop
+wscript C:\ProgramData\windos\windos.vbs
+exit
